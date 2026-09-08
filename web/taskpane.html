@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Email Exporter</title>
+  <link rel="stylesheet" href="taskpane.css?v=1.3.0" />
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <script defer src="xlsx-lite.js?v=1.3.0"></script>
+  <script defer src="taskpane.js?v=1.3.0"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="title-row">
+        <img src="assets/icon-32.png" class="app-icon" alt="" />
+        <div>
+          <h1>Email Exporter</h1>
+          <p class="subtitle">Export selected Outlook messages directly to Excel.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="card selection-card" aria-labelledby="selection-heading">
+      <div class="section-heading-row">
+        <h2 id="selection-heading">Selection</h2>
+        <span id="selectionCount" class="badge">Checking…</span>
+      </div>
+      <p id="selectionHint" class="muted">Select one or more messages in Outlook.</p>
+    </section>
+
+    <section class="card" aria-labelledby="fields-heading">
+      <div class="section-heading-row">
+        <h2 id="fields-heading">Export fields</h2>
+        <span id="fieldCount" class="badge"></span>
+      </div>
+      <p class="muted small field-help">
+        From and To are read from each message's MIME headers for the most accurate spam addresses. Outlook's structured fields are used only as a fallback.
+      </p>
+      <div class="field-actions">
+        <button id="defaultFieldsButton" type="button" class="link-button">Defaults</button>
+        <button id="selectAllFieldsButton" type="button" class="link-button">Select all</button>
+        <button id="clearFieldsButton" type="button" class="link-button">Clear</button>
+      </div>
+      <div id="fieldList" class="field-grid"></div>
+    </section>
+
+    <section class="card" aria-labelledby="options-heading">
+      <h2 id="options-heading">Recipient layout</h2>
+      <label class="option-row">
+        <input type="radio" name="recipientLayout" value="message" checked />
+        <span>
+          <strong>One row per email</strong>
+          <small>Multiple To recipients are separated with semicolons.</small>
+        </span>
+      </label>
+      <label class="option-row">
+        <input type="radio" name="recipientLayout" value="recipient" />
+        <span>
+          <strong>One row per To recipient</strong>
+          <small>An email to three To recipients creates three rows.</small>
+        </span>
+      </label>
+    </section>
+
+    <section class="card export-card" aria-labelledby="export-heading">
+      <h2 id="export-heading">Export</h2>
+      <button id="exportButton" type="button" class="button primary" disabled>
+        Export selected emails to XLSX
+      </button>
+      <div id="progressWrap" class="progress-wrap hidden" aria-live="polite">
+        <progress id="progressBar" value="0" max="100"></progress>
+        <span id="progressText" class="muted small"></span>
+      </div>
+      <p id="completionText" class="status-text success-text hidden" aria-live="polite"></p>
+    </section>
+
+    <section id="errorCard" class="card error-card hidden" aria-labelledby="errors-heading">
+      <h2 id="errors-heading">Messages not exported</h2>
+      <p id="errorSummary"></p>
+      <ul id="errorList"></ul>
+    </section>
+
+    <section id="compatibilityCard" class="card error-card hidden" aria-labelledby="compatibility-heading">
+      <h2 id="compatibility-heading">Outlook API requirement not met</h2>
+      <p>
+        This add-in requires Outlook Mailbox API 1.15 so it can load each selected message and read its sender and recipient details.
+      </p>
+    </section>
+
+    <footer class="footer">
+      <p>Mailbox data and XLSX generation stay inside this task pane. The add-in has no backend service.</p>
+      <p class="small">Maximum Outlook multi-selection: 100 messages per run.</p>
+    </footer>
+  </main>
+</body>
+</html>

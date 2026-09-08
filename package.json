@@ -1,0 +1,14 @@
+{
+  "name": "outlook-email-exporter",
+  "version": "1.3.0",
+  "private": true,
+  "description": "A New Outlook add-in that exports selected email metadata directly to XLSX.",
+  "scripts": {
+    "trust-cert": "office-addin-dev-certs install",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "office-addin-dev-certs": "^2.0.10"
+  }
+}
